@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<style>
+		*{margin:0;padding:0;}
+		.wrap{padding:10px;max-width:500px;}
+		li{list-style:none;padding-left:10px;}
+		body{background:#ebebeb;}
+		table{table-layout:fixed;}
+		td{text-align:center;border:1px solid #ebebeb;background:#fff;}
+		.left{float:left;width:100%;}
+		.right{float:left;width:30%;}
+		a{text-decoration:none;color:#000;display:inline-block;width:100%;height:100%;padding:10px 0;}
+		#result{text-align:right;font-size:30px;min-height:40px;}
+		#result0{height:21px;text-align:right;}
+	</style>
+    <script>
+	</script>
+</head>
+<body>
+	<div class="wrap">
+		<h1>계산기</h1>
+		<div>
+			<div class="left">
+				<div id="result0"></div>
+				<div id="result"></div>
+				<table style="width:100%;">
+					<colgroup>
+						<col style=""/>
+						<col style=""/>
+						<col style=""/>
+						<col style=""/>
+					</colgroup>
+					<tbody>
+						<tr>
+							<td colspan="4">
+								<input onkeyup="change()" type="number" id="pV2" style="width:100%;line-height:40px;height:40px;text-align:right;overflow:hidden;" placeholder="입력하세요" value=""/>
+							</td>
+						</tr>
+
+						<tr>
+							<td><a href="" onclick="clac(7);return false;">7</a></td>
+							<td><a href="" onclick="clac(8);return false;">8</a></td>
+							<td><a href="" onclick="clac(9);return false;">9</a></td>
+							<td rowspan="2"><a href="" onclick="clac2('+');return false;">+</a></td>
+						</tr>
+						<tr>
+							<td><a href="" onclick="clac(4);return false;">4</a></td>
+							<td><a href="" onclick="clac(5);return false;">5</a></td>
+							<td><a href="" onclick="clac(6);return false;">6</a></td>
+							
+						</tr>
+						<tr>
+							<td><a href="" onclick="clac(1);return false;">1</a></td>
+							<td><a href="" onclick="clac(2);return false;">2</a></td>
+							<td><a href="" onclick="clac(3);return false;">3</a></td>
+							<td><a href="" onclick="clac2('-');return false;">-</a></td>
+						</tr>
+						<tr>
+							<td><a href="" onclick="location.reload();">Reset</a></td>
+							<td><a href="" onclick="clac(0);return false;">0</a></td>
+							<td><a href="" onclick="clac4();return false;">Del</a></td>
+							<td><a href="" onclick="clac3();return false;"id="calcal">=</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!--
+			<div class="right">
+				<ol>
+					<li>123</li>
+					<li>123</li>
+				</ol>
+			</div>
+			-->
+			<div id="process" style="float:left;width:100%;">
+				<input type="hidden" id="pV1" value=""/>
+				<input type="hidden" id="tmp" value=""/><br/>
+				<input type="hidden" id="processFunc" value=""/>
+				<input type="hidden" id="processCalc" value=""/>
+			</div>
+			<script>
+				document.getElementById("pV2").focus();
+			
+				function clac(n){
+					var pV2Value = document.getElementById("pV2").value;
+					var tmpValue = document.getElementById("tmp").value;
+
+					document.getElementById("tmp").value = n;
+					document.getElementById("pV2").value = pV2Value +""+ n;
+					// 상단에 나타내기
+					document.getElementById("result").innerHTML=document.getElementById("pV2").value;
+				}
+				function clac2(str){
+					document.getElementById("processCalc").value = str; 
+					// 처음 값이 없을 때
+					if(document.getElementById("pV1").value == ""){
+						console.log("if");
+						// p2값을 p1으로옮기고
+						document.getElementById("pV1").value = document.getElementById("pV2").value;
+
+						// p2값 삭제
+						document.getElementById("pV2").value = "";
+					}
+						console.log("else");
+						// 연산한다.
+						document.getElementById("processFunc").value = (document.getElementById("pV1").value*1) + (document.getElementById("pV2").value*1);
+
+						// p1 값을 변경
+						document.getElementById("pV1").value = 
+						document.getElementById("processFunc").value;
+						
+						// 상위 연산과정 
+						document.getElementById("result0").innerHTML = document.getElementById("pV1").value + document.getElementById("processCalc").value;
+
+						// p2값 삭제
+						document.getElementById("pV2").value = "";
+
+						// result값 삭제
+						document.getElementById("result").innerHTML = "";
+						
+						// 입력폼 포커싱
+						document.getElementById("pV2").focus();
+
+
+				}
+				function clac3(){
+					if(document.getElementById("pV2").value == ""){
+						return false;
+					}
+
+					var num1 = document.getElementById("pV1").value;
+					var num2 = document.getElementById("processCalc").value;
+					var num3 = document.getElementById("pV2").value;
+					var total = (eval(num1 + num2 + num3));
+					document.getElementById("processFunc").value = total;
+
+					document.getElementById("pV1").value = total;
+					document.getElementById("result").innerHTML = total;
+
+					// p2값 삭제
+					document.getElementById("pV2").value = "";
+
+					document.getElementById("result0").innerHTML = 
+					document.getElementById("result").innerHTML + document.getElementById("processCalc").value;
+				}
+
+				function clac4(){
+					var fullStr = document.getElementById("pV2").value;
+					var sliceStr = fullStr.slice(0,-1);
+
+					if(document.getElementById("pV2").value !== ""){
+						document.getElementById("pV2").value = sliceStr;
+						document.getElementById("result").innerHTML = sliceStr
+					};
+				}
+				function change(){
+					document.getElementById("result").innerHTML = document.getElementById("pV2").value;
+				}
+			</script>
+		</div>
+	</div>
+</body>
+</html>
